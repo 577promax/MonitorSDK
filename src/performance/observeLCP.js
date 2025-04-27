@@ -1,16 +1,17 @@
-const observer = new PerformanceObserver(entryHandler);
+export default function observeLCP() {
+  const observer = new PerformanceObserver(entryHandler);
 
-//监听lcp type需要变化一下  最大绘制时间
-observer.observe({ type: "largest-contentful-paint", buffered: true });
+  //监听lcp type需要变化一下  最大绘制时间
+  observer.observe({ type: "largest-contentful-paint", buffered: true });
 
-function entryHandler(list, obj) {
-  //lcp断开的位置不一样
-  if (observer) {
-    observer.disconnect();
-  }
+  function entryHandler(list, obj) {
+    //lcp断开的位置不一样
+    if (observer) {
+      observer.disconnect();
+    }
 
-  //不需要判断条件
-  for (const entry of list.getEntries()) {
+    //不需要判断条件
+    for (const entry of list.getEntries()) {
       const json = entry.toJSON();
       console.log(json);
 
@@ -20,7 +21,6 @@ function entryHandler(list, obj) {
         subType: entry.name,
         pageUrl: window.location.href,
       };
+    }
   }
 }
-
-

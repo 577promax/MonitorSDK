@@ -2,9 +2,14 @@
 
 //{2}
 //页面加载完调用observeEvent方法函数
+
+// document.readyState 是一个表示文档加载状态的属性，可能的值包括：
+// "loading"：文档仍在加载。
+// "interactive"：文档已加载完成，文档已被解析，但子资源（如图片、样式表等）可能尚未加载完成。
+// "complete"：文档和所有子资源都已加载完成
 export default function observeEntries() {
-  if (document.readyState === "complete") {
-    observeEvent();
+  if (document.readyState === "complete") {//判断页面是否已经完全加载
+    observeEvent(); //开始监听性能条目
   } else {
     const onLoad = () => {
       observeEvent();
