@@ -1,11 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <!-- 使用web-vitals库 -->
+    <!-- module，把js脚本当成模块处理，可以使用import -->
+    <script type="module">
+      // 线上加载
+      // import {onCLS, onFID, onLCP} from 'https://unpkg.com/web-vitals@4?module';
+      import {
+        onCLS,
+        onFID,
+        onLCP,
+      } from "https://unpkg.com/web-vitals@4/dist/web-vitals.attribution.js?module";
+      onCLS(console.log);
+      onFID(console.log);
+      onLCP(console.log);
+    </script>
+  </head>
+  <body>
+    <div>test</div>
+  </body>
 </html>
