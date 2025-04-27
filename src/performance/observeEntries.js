@@ -7,6 +7,8 @@
 // "loading"：文档仍在加载。
 // "interactive"：文档已加载完成，文档已被解析，但子资源（如图片、样式表等）可能尚未加载完成。
 // "complete"：文档和所有子资源都已加载完成
+
+// 利用函数执行？
 export default function observerEntries() {
   if (document.readyState === "complete") {
     observeEvent();
