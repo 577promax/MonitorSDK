@@ -7,15 +7,15 @@
 // "loading"：文档仍在加载。
 // "interactive"：文档已加载完成，文档已被解析，但子资源（如图片、样式表等）可能尚未加载完成。
 // "complete"：文档和所有子资源都已加载完成
-export default function observeEntries() {
-  if (document.readyState === "complete") {//判断页面是否已经完全加载
-    observeEvent(); //开始监听性能条目
+export default function observerEntries() {
+  if (document.readyState === "complete") {
+    observeEvent();
   } else {
     const onLoad = () => {
       observeEvent();
-      window.addEventListener("load", onLoad, true); //没必要冒泡
+      window.removeEventListener("load", onLoad, true);
     };
-    window.removeEventListener("load", onLoad, true); 
+    window.addEventListener("load", onLoad, true);
   }
 }
 
