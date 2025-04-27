@@ -1,7 +1,6 @@
 //new 一个
 //需要传一个回调函数
 const observer = new PerformanceObserver(entryHandler)
-console.log(new PerformanceObserver());
 
 //缓冲区，arrayBuffer，缓存  这里的buffered: true 是确保观察到所有的paint时间
 //buffered  检查已缓冲的性能条目 
@@ -47,7 +46,7 @@ function entryHandler(list, obj) {
                 ...json,
                 type: 'performance', //性能相关的
                 // subType: 'paint'
-                subType: entry.name
+                subType: entry.name,
                 // 当前页面的URl
                 pageUrl: window.location.href
             }
