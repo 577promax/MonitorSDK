@@ -33,7 +33,7 @@ function entryHandler(list, obj) {
     //循环一下
     for (const entry of list.getEntries()) {
         // FP
-        if (entry.name === 'first-paint') {
+        if (entry.name === 'first-paint') { //监听到对应就停止
             //当等于FP，取消监听
             observer.disconnect();
 
