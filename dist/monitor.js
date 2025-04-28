@@ -9,7 +9,7 @@ var monitor = (function (exports) {
       appID: "123",
       userId: "123",
       isImageUpload: false,
-      batchSize: 10 //批量上报的大小
+      batchSize: 5 //批量上报的大小
     };
     function setConfig(options) {
       for (var key in config) {
@@ -169,18 +169,22 @@ var monitor = (function (exports) {
     //减少一条一条上报
     function report(data) {
       if (!config.url) {
-        console.error("请配置上报url地址");
+        console.error('请设置上传 url 地址');
       }
       var reportData = JSON.stringify({
         id: generateUniqueId(),
-        //唯一的id，后续看怎么生成
         data: data
       });
-      //tood:上报数据
-      //gif > sendBeacon > xhr
-      var value = beaconRequest(config.url);
-      if (!value) {
-        config.isImageUpload ? imgRequest(reportData) : xhrRequest(reportData);
+      // 上报数据，使用图片的方式
+      if (config.isImageUpload) {
+        imgRequest(reportData);
+      } else {
+        // 优先使用 sendBeacon
+        if (window.navigator.sendBeacon) {
+          return beaconRequest(reportData);
+        } else {
+          xhrRequest(reportData);
+        }
       }
     }
 
@@ -189,6 +193,7 @@ var monitor = (function (exports) {
       //定义一些缓存的方法
       addCache(data);
       var dataCache = getCache();
+      console.error("缓存数据", dataCache);
       if (dataCache.length && dataCache.length > config.batchSize) {
         report(dataCache);
         clearCache();
@@ -201,21 +206,21 @@ var monitor = (function (exports) {
       var img = new Image();
       img.src = config.url + "?data=" + encodeURIComponent(JSON.stringify(data));
     }
-    function xhrRequest(url, data) {
+    function xhrRequest(data) {
       if (window.requestIdleCallback) {
         window.requestIdleCallback(function () {
           var xhr = new XMLHttpRequest();
-          originalOpen$1.call(xhr, "POST", url);
+          originalOpen$1.call(xhr, "post", config.url);
           originalSend$1.call(xhr, JSON.stringify(data));
         }, {
-          timeout: 2000
+          timeout: 3000
         });
       } else {
         setTimeout(function () {
           var xhr = new XMLHttpRequest();
-          originalOpen$1.call(xhr, "POST", url);
+          originalOpen$1.call(xhr, "post", url);
           originalSend$1.call(xhr, JSON.stringify(data));
-        }, 2000);
+        });
       }
     }
 
@@ -224,13 +229,13 @@ var monitor = (function (exports) {
       //空闲时间内去上传
       if (window.requestIdleCallback) {
         window.requestIdleCallback(function () {
-          return sendBeacon(config.url, data);
+          window.navigator.sendBeacon(config.url, data);
         }, {
           timeout: 2000
         });
       } else {
         setTimeout(function () {
-          return sendBeacon(config.url, data);
+          window.navigator.sendBeacon(config.url, data);
         }, 2000);
       }
     }
@@ -768,7 +773,16 @@ var monitor = (function (exports) {
       __webMonitorSDK__.vue = true;
       var handler = Vue.config.errorHandler; //Vue官方的errorHandler
       Vue.config.errorHandler = function (err, vm, info) {
-        //todo：上报具体数据
+        // todo: 上报具体的错误信息
+        var reportData = {
+          info: info,
+          error: err.stack,
+          subType: 'vue',
+          type: 'error',
+          startTime: window.performance.now(),
+          pageURL: window.location.href
+        };
+        lazyReportBatch(reportData);
         if (handler) {
           handler.call(this, err, vm, info);
         }
@@ -778,6 +792,15 @@ var monitor = (function (exports) {
       if (__webMonitorSDK__.react) return;
       __webMonitorSDK__.react = true;
       //todo：上报具体数据
+      var reportData = {
+        error: err === null || err === void 0 ? void 0 : err.stack,
+        info: info,
+        subType: 'react',
+        type: 'error',
+        startTime: window.performance.now(),
+        pageURL: window.location.href
+      };
+      lazyReportBatch(reportData);
     }
     var webMonitorSDK = {
       install: install,
