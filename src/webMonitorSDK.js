@@ -2,6 +2,7 @@ import performance from "./performance/index";
 import error from "./error/index";
 import behavior from "./behavior/index";
 import { setConfig } from "./config";
+import { lazyReportBatch } from "./report";
 
 //内部变量，两个杠杠
 window.__webMonitorSDK__ = {
@@ -14,11 +15,20 @@ export  function install(Vue, options) {
     __webMonitorSDK__.vue = true;
     const handler = Vue.config.errorHandler; //Vue官方的errorHandler
     Vue.config.errorHandler = function (err, vm, info) {
-        //todo：上报具体数据
+        // todo: 上报具体的错误信息
+        const reportData = {
+            info,
+            error: err.stack,
+            subType: 'vue',
+            type: 'error',
+            startTime: window.performance.now(),
+            pageURL: window.location.href,
+        };
+        lazyReportBatch(reportData);
         if (handler) {
             handler.call(this, err, vm, info);
         }
-    }
+    };
 }
 
 
@@ -26,6 +36,15 @@ function errorBoundary(err) {
     if (__webMonitorSDK__.react) return;
     __webMonitorSDK__.react = true;
      //todo：上报具体数据
+     const reportData = {
+        error: err?.stack,
+        info,
+        subType: 'react',
+        type: 'error',
+        startTime: window.performance.now(),
+        pageURL: window.location.href,
+    };
+    lazyReportBatch(reportData);
 }
 
 export default {
