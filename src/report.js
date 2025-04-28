@@ -1,5 +1,6 @@
 import config from "./config";
 import { addCache, getCache, clearCache } from "./cache";
+import { generateUniqueId } from "./utils";
 
 export const originalProto = XMLHttpRequest.prototype;
 export const originalOpen = originalProto.open;
@@ -11,7 +12,7 @@ export function report(data) {
     console.error("请配置上报url地址");
   }
   const reportData = JSON.stringify({
-    id: "11", //唯一的id，后续看怎么生成
+    id: generateUniqueId(), //唯一的id，后续看怎么生成
     data,
   });
   //tood:上报数据
@@ -35,9 +36,6 @@ export function lazyReportBatch(data) {
 
 //三种上报方式
 
-export function generateUniqueId() {
-  return "ID-" + Date.now() + "-" + Math.random().toString(36).substring(2, 9);
-}
 
 export function imgRequest(data) {
   const img = new Image();

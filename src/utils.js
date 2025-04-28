@@ -15,3 +15,8 @@ export function deepCopy(target) {
     }
     return target
 }
+
+
+export function generateUniqueId() {
+    return "ID-" + Date.now() + "-" + Math.random().toString(36).substring(2, 9);
+  }
