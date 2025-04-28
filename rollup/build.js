@@ -1,9 +1,11 @@
 const path = require("path");
-const json = require("@rollup/plugin-json");
-const { babel } = require("@rollup/plugin-babel");
+const json = require("@rollup/plugin-json");  //json转es6
+const { babel } = require("@rollup/plugin-babel");  //转换高级语法
 const resolveFile = function (filePath) {
     return path.join(__dirname, filePath);
 };
+
+//打包用到的插件
 const plugins = [
     json({
         compact: true,
@@ -29,7 +31,7 @@ module.exports = [
         input: resolveFile("../src/webMonitorSDK.js"),
         output: {
             file: resolveFile("../dist/monitor.js"),
-            format: "iife",
+            format: "iife",  //适合在JavaScript标签直接使用，全局变量方式
             name: "monitor",
             sourcemap: true,
         },
@@ -39,7 +41,7 @@ module.exports = [
         input: resolveFile("../src/webMonitorSDK.js"),
         output: {
             file: resolveFile("../dist/monitor.esm.js"),
-            format: "esm",
+            format: "esm",  //es6环境
             name: "monitor",
             sourcemap: true,
         },
@@ -49,7 +51,7 @@ module.exports = [
         input: resolveFile("../src/webMonitorSDK.js"),
         output: {
             file: resolveFile("../dist/monitor.cjs.js"),
-            format: "cjs",
+            format: "cjs",  //nodejs环境
             name: "monitor",
             sourcemap: true,
         },
