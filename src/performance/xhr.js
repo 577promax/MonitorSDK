@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 //统计ajax请求时间、ajax，使用axios发送
 
 //axios是封装的xhr
@@ -45,6 +47,7 @@ function overwriteSendAndOpen() {
       };
       //上报数据 todo
       // report(reportData);
+      lazyReportBatch(reportData);
 
       this.removeEventListener("loadend", onLoaded, true); //移除事件监听
     };

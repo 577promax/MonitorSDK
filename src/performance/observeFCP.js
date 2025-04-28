@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 export default function observeFCP() {
   const observer = new PerformanceObserver(entryHandler);
 
@@ -23,6 +25,7 @@ export default function observeFCP() {
           // 当前页面的URl
           pageUrl: window.location.href,
         };
+        lazyReportBatch(reportData);
       }
     }
   }

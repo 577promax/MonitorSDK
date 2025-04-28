@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 
 export default function observeLoad() {
     //监听pageShow事件 
@@ -12,6 +14,7 @@ export default function observeLoad() {
                     // 
                     startTime: performance.now() - event.timeStamp, //当前时间点 - 显示时间点（计算从页面显示到当前的时间间隔）
                 }
+                lazyReportBatch(reportData);
             });
 
         });

@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 const originalFetch = window.fetch;
 
 function overwriteFetch() {
@@ -43,6 +45,7 @@ function overwriteFetch() {
 
         //todo：上报数据
         // return Promise.reject(err);
+        lazyReportBatch(reportData);
       });
   };
 }

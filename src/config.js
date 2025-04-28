@@ -6,6 +6,7 @@ const config = {
     appID: "123",
     userId: "123",
     isImageUpload: false,
+    batchSize: 10, //批量上报的大小
 }
 
 export default config;

@@ -1,9 +1,11 @@
 import config from "./config";
+import { addCache, getCache, clearCache } from "./cache";
 
 export const originalProto = XMLHttpRequest.prototype;
 export const originalOpen = originalProto.open;
 export const originalSend = originalProto.send;
 
+//减少一条一条上报
 export function report(data) {
   if (!config.url) {
     console.error("请配置上报url地址");
@@ -20,7 +22,18 @@ export function report(data) {
   }
 }
 
-//s三种上报方式
+//实际业务调用这个函数去上报
+export function lazyReportBatch(data) {
+  //定义一些缓存的方法
+  addCache(data);
+  const data = getCache();
+  if (data.length && data.length > config.batchSize) {
+    report(data);
+    clearCache();
+  }
+}
+
+//三种上报方式
 
 export function generateUniqueId() {
   return "ID-" + Date.now() + "-" + Math.random().toString(36).substring(2, 9);
@@ -32,19 +45,12 @@ export function imgRequest(data) {
 }
 
 export function xhrRequest(url, data) {
-  const xhr = new XMLHttpRequest();
-  originalOpen.call(xhr, "POST", url);
-  originalSend.call(xhr, JSON.stringify(data));
-}
-
-//sendBeacon有兼容性
-export function beaconRequest(data) {
-    let flag = true;
-  //空闲时间内去上传
   if (window.requestIdleCallback) {
     window.requestIdleCallback(
       () => {
-        return flag = sendBeacon(config.url, data);
+        const xhr = new XMLHttpRequest();
+        originalOpen.call(xhr, "POST", url);
+        originalSend.call(xhr, JSON.stringify(data));
       },
       {
         timeout: 2000,
@@ -52,13 +58,32 @@ export function beaconRequest(data) {
     );
   } else {
     setTimeout(() => {
-      return flag = sendBeacon(config.url, data);
+      const xhr = new XMLHttpRequest();
+      originalOpen.call(xhr, "POST", url);
+      originalSend.call(xhr, JSON.stringify(data));
+    }, 2000);
+  }
+}
+
+//sendBeacon有兼容性
+export function beaconRequest(data) {
+  let flag = true;
+  //空闲时间内去上传
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(
+      () => {
+        return (flag = sendBeacon(config.url, data));
+      },
+      {
+        timeout: 2000,
+      }
+    );
+  } else {
+    setTimeout(() => {
+      return (flag = sendBeacon(config.url, data));
     }, 2000);
   }
 }
 export function isSupportBeacon() {
-  // return !!navigator.sendBeacon;
   return "sendBeacon" in navigator;
 }
-
-// const sendBeacon = isSupportBeacon() ? navigator.sendBeacon : xhrRequest;

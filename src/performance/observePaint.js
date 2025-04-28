@@ -1,3 +1,6 @@
+import { lazyReportBatch } from "../report";
+
+
 export default function observePaint() {
   //new 一个
   //需要传一个回调函数
@@ -53,6 +56,7 @@ export default function observePaint() {
           pageUrl: window.location.href,
         };
         //发送数据 上报 todo;
+        lazyReportBatch(reportData);
       }
     }
   }

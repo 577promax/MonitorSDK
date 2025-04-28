@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 export default function observeLCP() {
   const observer = new PerformanceObserver(entryHandler);
 
@@ -21,6 +23,7 @@ export default function observeLCP() {
         subType: entry.name,
         pageUrl: window.location.href,
       };
+      lazyReportBatch(reportData);
     }
   }
 }

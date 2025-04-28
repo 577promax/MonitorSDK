@@ -1,3 +1,6 @@
+import { lazyReportBatch } from "../report";
+
+
 // document.readyState === 'complete' ?
 
 //{2}
@@ -51,6 +54,7 @@ export function observeEvent() {
         startTime: performance.now(),
       };
       //   console.log(entry);
+      lazyReportBatch(reportData);
     }
   };
   let observer = new PerformanceObserver(entryHandler);

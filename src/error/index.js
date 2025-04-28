@@ -1,3 +1,5 @@
+import { lazyReportBatch } from "../report";
+
 export default function error() {
   //监听全局的错误事件(只是捕获资源加载的错误：js css img等)
   window.addEventListener(
@@ -24,6 +26,7 @@ export default function error() {
           paths: event.path, //具体的资源路径
         };
         //todo:上报错误信息
+        lazyReportBatch(reportData);
       }
     },
     true
@@ -42,6 +45,7 @@ export default function error() {
       pageUrl: window.location.href,
       startTime: performance.now(), //当前时间
     };
+    lazyReportBatch(reportData);
   };
   //监听异步错误 promise、async await
   Window.addEventListener(
@@ -55,6 +59,7 @@ export default function error() {
         startTime: performance.now(), //当前时间 e.timeStamp也行
       };
       // todo:上报数据
+      lazyReportBatch(reportData);
     },
     true
   );
