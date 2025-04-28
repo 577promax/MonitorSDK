@@ -1,4 +1,7 @@
-
+import performance from "./performance";
+import error from "./error";
+import behavior from "./behavior";
+import { setConfig } from "./config";
 
 //内部变量，两个杠杠
 window.__webMonitorSDK__ = {
@@ -27,4 +30,19 @@ function errorBoundary(err) {
 
 export default {
     install,
+    errorBoundary,
+    performance,
+    error,
+    behavior,
+    init,
 }
+
+
+export function init(options) {
+    setConfig(options);
+}
+
+// webMonitorSDK.init({
+//     appID: '123'
+// })
+//当时腾讯地图的SDK封装

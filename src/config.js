@@ -9,4 +9,13 @@ const config = {
     batchSize: 10, //批量上报的大小
 }
 
+
+export function setConfig(options) {
+    for (const key in config) {
+        if (options[key]) {
+            config[key] = options[key];
+        }
+    }
+}
+
 export default config;
