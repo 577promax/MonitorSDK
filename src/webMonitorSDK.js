@@ -18,6 +18,13 @@ export  function install(Vue, options) {
     }
 }
 
+
+function errorBoundary(err) {
+    if (__webMonitorSDK__.react) return;
+    __webMonitorSDK__.react = true;
+     //todo：上报具体数据
+}
+
 export default {
     install,
 }
