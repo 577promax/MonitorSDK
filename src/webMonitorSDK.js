@@ -1,6 +1,6 @@
-import performance from "./performance";
-import error from "./error";
-import behavior from "./behavior";
+import performance from "./performance/index";
+import error from "./error/index";
+import behavior from "./behavior/index";
 import { setConfig } from "./config";
 
 //内部变量，两个杠杠

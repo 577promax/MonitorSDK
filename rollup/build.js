@@ -46,7 +46,7 @@ module.exports = [
     },
     {
         plugins,
-        input: resolveFile("../src/webMonitorSDK .js"),
+        input: resolveFile("../src/webMonitorSDK.js"),
         output: {
             file: resolveFile("../dist/monitor.cjs.js"),
             format: "cjs",

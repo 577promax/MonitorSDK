@@ -27,9 +27,9 @@ export function report(data) {
 export function lazyReportBatch(data) {
   //定义一些缓存的方法
   addCache(data);
-  const data = getCache();
-  if (data.length && data.length > config.batchSize) {
-    report(data);
+  const dataCache = getCache();
+  if (dataCache.length && dataCache.length > config.batchSize) {
+    report(dataCache);
     clearCache();
   }
 }
