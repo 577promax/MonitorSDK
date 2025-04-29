@@ -24,6 +24,8 @@ export  function install(Vue, options) {
             startTime: window.performance.now(),
             pageURL: window.location.href,
         };
+        console.log('VUe error reportData', reportData);
+        
         lazyReportBatch(reportData);
         if (handler) {
             handler.call(this, err, vm, info);
@@ -59,7 +61,8 @@ export default {
 
 export function init(options) {
     setConfig(options);
-    error();
+    // error();
+    performance();
 }
 
 // webMonitorSDK.init({

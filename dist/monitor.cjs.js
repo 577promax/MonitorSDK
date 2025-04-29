@@ -814,7 +814,8 @@ var webMonitorSDK = {
 };
 function init(options) {
   setConfig(options);
-  error();
+  // error();
+  performance$1();
 }
 
 // webMonitorSDK.init({
