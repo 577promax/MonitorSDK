@@ -48,7 +48,7 @@ export default function error() {
     lazyReportBatch(reportData);
   };
   //监听异步错误 promise、async await
-  Window.addEventListener(
+  window.addEventListener(
     "unhandledrejection",
     function (e) {
       const reportData = {

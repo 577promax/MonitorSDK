@@ -59,6 +59,7 @@ export default {
 
 export function init(options) {
     setConfig(options);
+    error();
 }
 
 // webMonitorSDK.init({

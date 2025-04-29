@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 
-
+//uBlock插件阻止post访问
 app.post('/reportData', (req, res) => {
     console.log("上报数据", req.body);
     res.status(200).send("ok");

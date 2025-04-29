@@ -1,6 +1,7 @@
 //自己定义的参数
 var config = {
-  url: 'http://localhost:3000/api/monitor',
+  // url: 'http://localhost:9800/reportData',
+  url: '',
   projectName: 'feMonitor',
   //项目名字
   appID: "123",
@@ -666,7 +667,7 @@ function error() {
     lazyReportBatch(reportData);
   };
   //监听异步错误 promise、async await
-  Window.addEventListener("unhandledrejection", function (e) {
+  window.addEventListener("unhandledrejection", function (e) {
     var _e$reason;
     var reportData = {
       type: "error",
@@ -809,6 +810,7 @@ var webMonitorSDK = {
 };
 function init(options) {
   setConfig(options);
+  error();
 }
 
 // webMonitorSDK.init({

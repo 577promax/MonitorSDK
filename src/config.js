@@ -1,7 +1,8 @@
 
 //自己定义的参数
 const config = {
-    url: 'http://localhost:3000/api/monitor',
+    // url: 'http://localhost:9800/reportData',
+    url: '',
     projectName: 'feMonitor', //项目名字
     appID: "123",
     userId: "123",
